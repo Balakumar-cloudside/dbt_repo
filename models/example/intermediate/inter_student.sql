@@ -6,7 +6,10 @@
         "field": "enrollment_date",
         "data_type": "date",
         "granularity": "year"
-    }
+    },
+    post_hook=[
+        "DELETE FROM {{ target }} WHERE student_id NOT IN (SELECT student_id FROM {{ ref('stg_student_1') }} WHERE student_id IS NOT NULL)"
+    ]
 ) }}
 
 with source_data as (
@@ -21,7 +24,8 @@ with source_data as (
         s2.course_id,
         s2.course_name,
         s2.credits,
-        s2.grade,s1.updated_at
+        s2.grade,
+        s1.updated_at
     from {{ ref('stg_student_1') }} s1
     inner join {{ ref('stg_student_2') }} s2
         on s1.student_id = s2.student_id
