@@ -2,11 +2,6 @@
     materialized = 'incremental',
     unique_key = 'student_id',
     incremental_strategy = 'merge',
-    partition_by={
-        "field": "enrollment_date",
-        "data_type": "date",
-        "granularity": "year"
-    },
     post_hook=[
         "DELETE FROM {{ target }} WHERE student_id NOT IN (SELECT student_id FROM {{ ref('stg_student_1') }} WHERE student_id IS NOT NULL)"
     ]
