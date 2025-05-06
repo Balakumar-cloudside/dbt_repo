@@ -14,3 +14,5 @@ SELECT
     updated_at
 FROM student
 )
+
+select * from ae
